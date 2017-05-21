@@ -6,10 +6,30 @@
 #include "qwirklepp/cube.h"
 #include "qwirklepp/cubes.h"
 #include "qwirklepp/observer.h"
+#include "qwirklepp/types.h"
+
+#include <set>
 
 namespace qwirklepp {
 
 namespace {
+
+auto AllDifferentColorAndKind(const Cubes & cubes)
+    -> bool
+{
+    std::set<Color> colors;
+    std::set<Kind> kinds;
+    for (unsigned idx = 0; idx < cubes.Count(); ++idx) {
+        const auto face = cubes.Get(idx).Peek();
+        if (!colors.insert(face.color).second) {
+            return true;
+        }
+        if (!kinds.insert(face.kind).second) {
+            return true;
+        }
+    }
+    return false;
+}
 
 class GameImpl: public Game {
 public:
@@ -132,11 +152,12 @@ auto GameImpl::RerollCubes(
     -> void
 {
     const auto rollIndices = _actor->AnswerRollCubes(playerIndex, *_content);
-    for (const auto & rollIndex: rollIndices) {
-        _content->GetHand(playerIndex).Get(rollIndex).Roll();
-    }
+    auto & hand = _content->GetHand(playerIndex);
+    cubes::Roll(hand, rollIndices);
     if (_isFirst) {
-        // TODO Reroll all until player can add more than one cube
+        while (AllDifferentColorAndKind(hand)) {
+            cubes::Roll(hand);
+        }
     }
 }
 

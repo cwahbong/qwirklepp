@@ -128,6 +128,22 @@ auto New()
     return std::make_unique<CubesImpl>();
 }
 
+auto Roll(Cubes & cubes)
+    -> void
+{
+    for (unsigned idx = 0; idx < cubes.Count(); ++idx) {
+        cubes.Get(idx).Roll();
+    }
+}
+
+auto Roll(Cubes & cubes, const std::vector<Index> & rollIndices)
+    -> void
+{
+    for (const auto & rollIndex: rollIndices) {
+        cubes.Get(rollIndex).Roll();
+    }
+}
+
 } // namespace cubes
 
 } // namespace qwirklepp

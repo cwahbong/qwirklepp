@@ -71,6 +71,7 @@ auto IsPlacable(
     return true;
 }
 
+// TODO must test this function
 auto CalcScore(
     const Board & board,
     const std::map<Location, Face> & locationFaces)

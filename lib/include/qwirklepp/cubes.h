@@ -44,6 +44,11 @@ namespace cubes {
 QWIRKLEPP_EXPORT auto New()
     -> std::unique_ptr<Cubes>;
 
+QWIRKLEPP_EXPORT auto Roll(Cubes & cubes)
+    -> void;
+QWIRKLEPP_EXPORT auto Roll(Cubes & cubes, const std::vector<Index> & rollIndices)
+    -> void;
+
 } // namespace cubes
 
 } // namespace qwirklepp
